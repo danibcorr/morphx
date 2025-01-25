@@ -1,0 +1,37 @@
+[project]
+name = "morphx"
+version = "0.1.0"
+description = "MorphX is a Streamlit-based tool for modifying metadata, converting files to Markdown, transcribing audio and more, all from an intuitive web interface. 🚀"
+authors = [
+    {name = "Daniel Bazo",email = "nothing@nothing.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "openai-whisper (>=20240930,<20240931)",
+    "streamlit (>=1.41.1,<2.0.0)",
+    "markitdown (>=0.0.1a3,<0.0.2)"
+]
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.4"
+pytest-timeout = "^2.3.1"
+
+[tool.poetry.group.lint.dependencies]
+black = "^24.10.0"
+flake8 = "^7.1.1"
+mypy = "^1.14.1"
+typing-extensions = "^4.12.2"
+types-requests = "^2.32.0.20241016"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 89
+skip-string-normalization = false
+
+[tool.bandit]
+exclude = ["src/tests/"]
+skips = ["B101"]
