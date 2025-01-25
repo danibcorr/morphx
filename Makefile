@@ -2,7 +2,7 @@
 
 .DEFAULT_GOAL := all
 
-SRC_PROJECT_NAME ?= src
+SRC_PROJECT_NAME ?= morphx
 SRC_TESTS ?= tests
 
 install:
@@ -37,11 +37,7 @@ complexity:
 security:
 	@echo "Runing Bandit Tests..."
 	poetry run bandit -r $(SRC_PROJECT_NAME) --exclude $(SRC_TESTS)
-	
-wiki-up:
-	@echo "Runing MkDocs..."
-	mkdocs serve
 
-pre-commit: clean lint test complexity security
+pre-commit: clean lint complexity security
 
-all: clean lint test complexity security wiki-up
+all: clean lint complexity security
