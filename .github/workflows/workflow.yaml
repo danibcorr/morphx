@@ -7,7 +7,7 @@ on:
     branches: [main, dev]
 
 env:
-  SRC_PROJECT_FOLDER: "src"
+  SRC_PROJECT_FOLDER: "morphx"
   SRC_PROJECT_TESTS: "tests"
   SRC_PYTHON_VERSION: "3.11"
 
