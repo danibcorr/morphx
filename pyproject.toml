@@ -24,7 +24,7 @@ classifiers = [
 keywords = ["python"]
 dependencies = [
     "noisereduce>=3.0.3",
-    "numpy==1.26.4",
+    "numpy==2.3.3",
     "openai-whisper==20250625",
     "st-copy==1.1.2",
     "streamlit==1.48.1",
