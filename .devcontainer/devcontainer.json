@@ -1,0 +1,32 @@
+{
+  "image": "mcr.microsoft.com/vscode/devcontainers/python:3.11",
+  "postCreateCommand": "sh ./.devcontainer/setup.sh",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.testing.pytestEnabled": true,
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": true,
+          "source.fixAll.ruff": true
+        },
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.codeActionsOnSave": {
+            "source.organizeImports.ruff": true,
+            "source.fixAll.ruff": true
+          }
+        },
+        "editor.rulers": [88],
+        "ruff.lint.enable": true,
+        "ruff.format.enable": true,
+        "ruff.organizeImports": true,
+        "ruff.fixAll": true
+      },
+      "extensions": ["ms-python.python", "charliermarsh.ruff"]
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  }
+}
