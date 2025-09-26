@@ -1,39 +1,36 @@
 name: Lint Code
+description: Lint and Format Check Python Code
 
-# Define inputs for the action, such as the project folder to lint
 inputs:
   src-project-folder:
-    description: "Directory where the project is located"
+    description: "Project Directory"
     required: true
     default: "src"
 
 runs:
   using: composite
   steps:
-    # Step 1: Check format with Black (code formatter)
-    - name: Check format with Black
+    - name: Lint with ruff
+      id: ruff
       run: |
-        echo "Running Black formatter check..."  
-        poetry run black --check ${{ inputs.src-project-folder }}/
+        echo "Running ruff linter..."  
+        uv run ruff check ${{ inputs.src-project-folder }}/
       shell: bash
 
-    # Step 2: Check type annotations with Mypy (type checker)
-    - name: Check Mypy
+    - name: Check imports with isort
       run: |
-        echo "Running Mypy type checker..." 
-        poetry run mypy ${{ inputs.src-project-folder }}/
+        echo "Running isort..."  
+        uv run isort --check ${{ inputs.src-project-folder }}/
       shell: bash
 
-    # Step 3: Lint code with Flake8 (style checker)
-    - name: Lint with flake8
-      run: |
-        echo "Running Flake8 linter..."
-        poetry run flake8 ${{ inputs.src-project-folder }}/
-      shell: bash
-
-    # Step 4: Check the Cognitive Complexity with complexipy
     - name: Cognitive Complexity with complexipy
       run: |
         echo "Running complexipy..."
-        poetry run complexipy ${{ inputs.src-project-folder }}/
+        uv run complexipy ${{ inputs.src-project-folder }}/
+      shell: bash
+
+    - name: Check Mypy
+      run: |
+        echo "Running Mypy type checker..."
+        uv run mypy ${{ inputs.src-project-folder }}/
       shell: bash

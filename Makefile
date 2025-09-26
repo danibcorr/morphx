@@ -1,43 +1,51 @@
-.PHONY: install clean lint test complexity security wiki-up pre-commit all
+# Declare all phony targets
+.PHONY: install clean lint code_check pipeline all
 
+# Default target
 .DEFAULT_GOAL := all
 
+# Variables
 SRC_PROJECT_NAME ?= morphx
-SRC_TESTS ?= tests
+SRC_PROJECT_TESTS ?= tests
+SRC_ALL ?= .
 
+# Install project dependencies
 install:
-	@echo "Upgrading pip..."
-	pip install --upgrade pip
-	@echo "Installing poetry..."
-	pip install poetry
-	@echo "Installing dependecies with poetry..."
-	poetry install
+	@echo "Installing dependencies..."
+	@uv sync --all-extras
+	@echo "✅ Dependencies installed."
 
+# Clean cache and temporary files
 clean:
-	@echo "Cleaning pycache..."
-	find . -type d -name __pycache__ -exec rm -rf {} +
-	find . -type d -name .pytest_cache -exec rm -rf {} +
+	@echo "Cleaning cache and temporary files..."
+	@find . -type d -name __pycache__ -exec rm -rf {} +
+	@find . -type d -name .pytest_cache -exec rm -rf {} +
+	@find . -type d -name .mypy_cache -exec rm -rf {} +
+	@find . -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
+	@echo "✅ Clean complete."
 
+# Check code formatting and linting
 lint:
-	@echo "Checking Code Format with Black..."
-	poetry run black --check $(SRC_PROJECT_NAME)/
-	@echo "Checking Code Annotations with Mypy..."
-	poetry run mypy $(SRC_PROJECT_NAME)/
-	@echo "Checking Code Style and Quality with Flake8..."
-	poetry run flake8 $(SRC_PROJECT_NAME)/
+	@echo "Running lint checks..."
+	@uv run isort $(SRC_ALL)/
+	@uv run nbqa isort $(SRC_ALL)/
+	@uv run ruff check --fix $(SRC_ALL)/
+	@uv run ruff format $(SRC_ALL)/
+	@uv run nbqa ruff $(SRC_ALL)/
+	@echo "✅ Linting complete."
 
-test:
-	@echo "Runing PyTest Tests..."
-	poetry run pytest $(SRC_PROJECT_NAME)/$(SRC_TESTS)/
-	
-complexity:
-	@echo "Check complexity with complexipy..."
-	poetry run complexipy $(SRC_PROJECT_NAME)/
+# Static analysis and security checks
+code_check:
+	@echo "Running static code checks..."
+	@uv run mypy $(SRC_PROJECT_NAME)/
+	@uv run complexipy -d low $(SRC_PROJECT_NAME)/
+	@uv run bandit -r $(SRC_PROJECT_NAME)/ --exclude $(SRC_PROJECT_TESTS)
+	@echo "✅ Code and security checks complete."
 
-security:
-	@echo "Runing Bandit Tests..."
-	poetry run bandit -r $(SRC_PROJECT_NAME) --exclude $(SRC_TESTS)
+# Run code checks
+pipeline: clean lint code_check
+	@echo "✅ Pipeline complete."
 
-pre-commit: clean lint complexity security
-
-all: clean lint complexity security
+# Run full workflow including install
+all: install pipeline
+	@echo "✅ All tasks complete."
