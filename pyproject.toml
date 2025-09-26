@@ -27,7 +27,7 @@ dependencies = [
     "numpy==1.26.4",
     "openai-whisper==20250625",
     "st-copy==1.1.2",
-    "streamlit==1.48.1",
+    "streamlit==1.50.0",
     "watchdog==6.0.0",
 ]
 
