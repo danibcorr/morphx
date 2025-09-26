@@ -24,11 +24,12 @@ classifiers = [
 keywords = ["python"]
 dependencies = [
     "noisereduce>=3.0.3",
-    "numpy==2.3.3",
     "openai-whisper==20250625",
     "st-copy==1.1.2",
     "streamlit==1.50.0",
     "watchdog==6.0.0",
+    "numpy==1.26.4; sys_platform == 'darwin'",
+    "numpy==2.3.3; sys_platform != 'darwin'",
 ]
 
 [tool.uv]
@@ -36,6 +37,7 @@ default-groups = "all"
 cache-keys = [{ file = "pyproject.toml" }, { git = { commit = true } }]
 required-environments = [
     "sys_platform == 'darwin' and platform_machine == 'x86_64'",
+    "sys_platform == 'linux' and platform_machine == 'x86_64'",
 ]
 
 [dependency-groups]
