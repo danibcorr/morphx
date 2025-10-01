@@ -1,28 +1,43 @@
 # Standard libraries
-import io
-
-# 3pps
-import noisereduce as nr
-import numpy as np
-import streamlit as st
-from scipy.io import wavfile
-from streamlit.runtime.uploaded_file_manager import UploadedFile
+import json
+import logging
 
 
-def reduce_noise_audio(audio_value: UploadedFile | None) -> io.BytesIO | None:
-	if audio_value is None:
-		return None
+def read_json_config(json_config_path: str) -> dict:
+	"""_summary_
 
-	bytes_data = audio_value.read()
-	buffer = io.BytesIO(bytes_data)
+	Args:
+		json_config_path (str): _description_
 
-	rate, data = wavfile.read(buffer)
+	Returns:
+		dict: _description_
+	"""
 
-	reduced_noise = nr.reduce_noise(
-		y=data, sr=rate, use_torch=True, device=st.session_state.device
+	try:
+		with open(file=json_config_path, encoding='utf-8') as file:
+			configuration = json.load(file)
+	
+		return configuration
+	
+	except FileNotFoundError:
+		raise ValueError("Path not available")
+	
+def create_logger(logger_file_name: str) -> logging.Logger:
+	"""_summary_
+
+	Args:
+		logger_file_name (str): _description_
+
+	Returns:
+		logging.Logger: _description_
+	"""
+	
+	# Configure logging
+	logging.basicConfig(
+		filename=logger_file_name,
+		level=logging.INFO,
+		format='%(asctime)s - %(levelname)s - %(message)s',
+		datefmt='%Y-%m-%d %H:%M:%S'
 	)
-	output_buffer = io.BytesIO()
-	wavfile.write(output_buffer, rate, reduced_noise.astype(np.int16))
-	output_buffer.seek(0)
 
-	return output_buffer
+	return logging.getLogger(__name__)

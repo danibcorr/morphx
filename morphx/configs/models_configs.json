@@ -1,0 +1,6 @@
+{
+    "slides_model": {
+        "model_id": "LiquidAI/LFM2-2.6B",
+        "device_map": "auto"
+    }
+}
