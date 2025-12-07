@@ -39,7 +39,7 @@ jobs:
           src-exclude: ${{ env.SRC_PROJECT_TESTS }}
 
   create-release:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     name: Create Release
     runs-on: ubuntu-latest
     needs: setup-lint-test

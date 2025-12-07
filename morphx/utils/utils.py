@@ -1,28 +1,51 @@
 # Standard libraries
-import io
-
-# 3pps
-import noisereduce as nr
-import numpy as np
-import streamlit as st
-from scipy.io import wavfile
-from streamlit.runtime.uploaded_file_manager import UploadedFile
+import logging
 
 
-def reduce_noise_audio(audio_value: UploadedFile | None) -> io.BytesIO | None:
-	if audio_value is None:
-		return None
+def create_logger(
+    logger_file_name: str, logger_name: str | None = None
+) -> logging.Logger:
+    """
+    Create a logger configured to write messages to a file and console.
 
-	bytes_data = audio_value.read()
-	buffer = io.BytesIO(bytes_data)
+    The logger is initialized once per name to avoid duplicate handlers.
+    It records informational messages and uses a uniform timestamped
+    formatter for both file and stream outputs.
 
-	rate, data = wavfile.read(buffer)
+    Args:
+        logger_file_name: File path where log entries are written.
+        logger_name: Name assigned to the logger, or a default when
+            unspecified.
 
-	reduced_noise = nr.reduce_noise(
-		y=data, sr=rate, use_torch=True, device=st.session_state.device
-	)
-	output_buffer = io.BytesIO()
-	wavfile.write(output_buffer, rate, reduced_noise.astype(np.int16))
-	output_buffer.seek(0)
+    Returns:
+        Logger instance configured with file and console handlers.
+    """
 
-	return output_buffer
+    logger = logging.getLogger(logger_name or __name__)
+    logger.setLevel(logging.INFO)
+
+    # Prevent adding multiple handlers if logger already exists
+    if not logger.handlers:
+        # File handler
+        file_handler = logging.FileHandler(logger_file_name)
+        file_handler.setLevel(logging.INFO)
+
+        # Console handler (optional, comment out if not needed)
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.INFO)
+
+        # Formatter
+        formatter = logging.Formatter(
+            "%(asctime)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
+        )
+        file_handler.setFormatter(formatter)
+        console_handler.setFormatter(formatter)
+
+        # Add handlers
+        logger.addHandler(file_handler)
+        logger.addHandler(console_handler)
+
+        # Avoid log duplication in root logger
+        logger.propagate = False
+
+    return logger

@@ -4,26 +4,28 @@
   "customizations": {
     "vscode": {
       "settings": {
+        "python.analysis.typeCheckingMode": "basic",
         "python.testing.pytestEnabled": true,
+        "python.linting.pylintEnabled": true,
+        "python.linting.enables": true,
+        "editor.formatOnSaveMode": "file",
         "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-          "source.organizeImports": true,
-          "source.fixAll.ruff": true
-        },
-        "[python]": {
-          "editor.defaultFormatter": "charliermarsh.ruff",
-          "editor.codeActionsOnSave": {
-            "source.organizeImports.ruff": true,
-            "source.fixAll.ruff": true
+        "editor.rulers": [
+          {
+            "column": 72,
+            "color": "#4a4f63"
+          },
+          {
+            "column": 88,
+            "color": "#7a8ad1"
           }
-        },
-        "editor.rulers": [88],
-        "ruff.lint.enable": true,
-        "ruff.format.enable": true,
-        "ruff.organizeImports": true,
-        "ruff.fixAll": true
+        ]
       },
-      "extensions": ["ms-python.python", "charliermarsh.ruff"]
+      "extensions": [
+        "ms-python.python",
+        "esbenp.prettier-vscode",
+        "njpwerner.autodocstring"
+      ]
     }
   },
   "features": {
