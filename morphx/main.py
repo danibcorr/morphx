@@ -1,7 +1,9 @@
 # 3pps
 import streamlit as st
-from configs.pages import PAGES
+
+# Own modules
+from morphx.configs import pages_config
 
 # Pages navigation
-pg = st.navigation(PAGES)
+pg = st.navigation(pages_config.PAGES)
 pg.run()

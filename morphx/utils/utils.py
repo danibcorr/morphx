@@ -1,43 +1,51 @@
 # Standard libraries
-import json
 import logging
 
 
-def read_json_config(json_config_path: str) -> dict:
-	"""_summary_
+def create_logger(
+    logger_file_name: str, logger_name: str | None = None
+) -> logging.Logger:
+    """
+    Create a logger configured to write messages to a file and console.
 
-	Args:
-		json_config_path (str): _description_
+    The logger is initialized once per name to avoid duplicate handlers.
+    It records informational messages and uses a uniform timestamped
+    formatter for both file and stream outputs.
 
-	Returns:
-		dict: _description_
-	"""
+    Args:
+        logger_file_name: File path where log entries are written.
+        logger_name: Name assigned to the logger, or a default when
+            unspecified.
 
-	try:
-		with open(file=json_config_path, encoding='utf-8') as file:
-			configuration = json.load(file)
-	
-		return configuration
-	
-	except FileNotFoundError:
-		raise ValueError("Path not available")
-	
-def create_logger(logger_file_name: str) -> logging.Logger:
-	"""_summary_
+    Returns:
+        Logger instance configured with file and console handlers.
+    """
 
-	Args:
-		logger_file_name (str): _description_
+    logger = logging.getLogger(logger_name or __name__)
+    logger.setLevel(logging.INFO)
 
-	Returns:
-		logging.Logger: _description_
-	"""
-	
-	# Configure logging
-	logging.basicConfig(
-		filename=logger_file_name,
-		level=logging.INFO,
-		format='%(asctime)s - %(levelname)s - %(message)s',
-		datefmt='%Y-%m-%d %H:%M:%S'
-	)
+    # Prevent adding multiple handlers if logger already exists
+    if not logger.handlers:
+        # File handler
+        file_handler = logging.FileHandler(logger_file_name)
+        file_handler.setLevel(logging.INFO)
 
-	return logging.getLogger(__name__)
+        # Console handler (optional, comment out if not needed)
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.INFO)
+
+        # Formatter
+        formatter = logging.Formatter(
+            "%(asctime)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
+        )
+        file_handler.setFormatter(formatter)
+        console_handler.setFormatter(formatter)
+
+        # Add handlers
+        logger.addHandler(file_handler)
+        logger.addHandler(console_handler)
+
+        # Avoid log duplication in root logger
+        logger.propagate = False
+
+    return logger
