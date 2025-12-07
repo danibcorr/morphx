@@ -88,7 +88,7 @@ exclude = [
 extend-exclude = ["*.ipynb"]
 
 [tool.ruff.lint]
-select = ["E", "F", "UP", "B", "SIM", "I"]
+select = ["E", "F", "UP", "B", "SIM"]
 ignore = ["E203"]
 
 [tool.ruff.lint.pydocstyle]
@@ -100,11 +100,6 @@ indent-style = "space"
 line-ending = "auto"
 docstring-code-format = true
 docstring-code-line-length = 88
-
-[tool.ruff.lint.isort]
-case-sensitive = true
-combine-as-imports = true
-force-to-top = ["morphx"]
 
 [tool.mypy]
 check_untyped_defs = true

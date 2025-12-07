@@ -18,20 +18,20 @@ install:
 # Clean cache and temporary files
 clean:
 	@echo "Cleaning cache and temporary files..."
-	@find . -type d -name __pycache__ -exec rm -rf {} +
-	@find . -type d -name .pytest_cache -exec rm -rf {} +
-	@find . -type d -name .mypy_cache -exec rm -rf {} +
 	@find . -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
+	@find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+	@find . -type d -name .pytest_cache -exec rm -rf {} + 2>/dev/null || true
+	@find . -type d -name .mypy_cache -exec rm -rf {} + 2>/dev/null || true
 	@echo "✅ Clean complete."
 
 # Check code formatting and linting
 lint:
 	@echo "Running lint checks..."
-	@uv run isort $(SRC_ALL)/
-	@uv run nbqa isort $(SRC_ALL)/
 	@uv run ruff check --fix $(SRC_ALL)/
 	@uv run ruff format $(SRC_ALL)/
 	@uv run nbqa ruff $(SRC_ALL)/
+	@uv run isort $(SRC_ALL)/
+	@uv run nbqa isort $(SRC_ALL)/
 	@echo "✅ Linting complete."
 
 # Static analysis and security checks

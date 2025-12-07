@@ -7,12 +7,8 @@ import whisper
 
 # Own modules
 from morphx.configs import WHISPER_OPTIONS
-from morphx.utils import (
-    convert_audio_to_wav,
-    create_logger,
-    reduce_noise_audio,
-    transcribe_audio,
-)
+from morphx.utils import (convert_audio_to_wav, create_logger, reduce_noise_audio,
+                          transcribe_audio)
 
 # Page configuration
 st.set_page_config(page_title="Audio Transcription", layout="centered")
