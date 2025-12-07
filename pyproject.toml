@@ -26,7 +26,7 @@ dependencies = [
     "noisereduce==3.0.3",
     "openai-whisper==20250625",
     "streamlit==1.52.1",
-    "numpy==2.3.3",
+    "numpy==2.3.5",
     "pydub==0.25.1",
 ]
 
