@@ -9,3 +9,5 @@ WHISPER_OPTIONS: Final[tuple[str, ...]] = (
     "large",
     "turbo",
 )
+
+FILE_CONVERSION_MODELS: Final[tuple[str, ...]] = ("MarkItDown",)

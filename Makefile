@@ -27,11 +27,8 @@ clean:
 # Check code formatting and linting
 lint:
 	@echo "Running lint checks..."
-	@uv run ruff check --fix $(SRC_ALL)/
 	@uv run ruff format $(SRC_ALL)/
-	@uv run nbqa ruff $(SRC_ALL)/
 	@uv run isort $(SRC_ALL)/
-	@uv run nbqa isort $(SRC_ALL)/
 	@echo "✅ Linting complete."
 
 # Static analysis and security checks

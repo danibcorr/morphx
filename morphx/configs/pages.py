@@ -15,7 +15,12 @@ class PagesConfig:
                 "tools/transcriptions.py",
                 title="Transcriptions",
                 icon=":material/airwave:",
-            )
+            ),
+            st.Page(
+                "tools/file_conversion.py",
+                title="File Conversion",
+                icon=":material/markdown:",
+            ),
         ],
     }
 
