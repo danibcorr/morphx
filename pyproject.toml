@@ -25,7 +25,7 @@ keywords = ["python"]
 dependencies = [
     "noisereduce==3.0.3",
     "openai-whisper==20250625",
-    "streamlit==1.52.1",
+    "streamlit==1.52.2",
     "numpy>=1.26.0,<2.0.0",
     "pydub==0.25.1",
     "markitdown[all]>=0.1.4",
