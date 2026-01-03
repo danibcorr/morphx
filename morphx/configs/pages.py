@@ -21,6 +21,11 @@ class PagesConfig:
                 title="File Conversion",
                 icon=":material/markdown:",
             ),
+            st.Page(
+                "tools/file_ocr.py",
+                title="File OCR",
+                icon=":material/type_specimen:",
+            ),
         ],
     }
 
